@@ -5,6 +5,7 @@ import React, {
   useContext,
   CSSProperties,
   useMemo,
+  useRef,
 } from "react";
 
 export interface ThemeProviderProps {
@@ -27,15 +28,45 @@ export const ThemeProvider: FC<ThemeProviderProps> = ({
   children,
 }: PropsWithChildren<ThemeProviderProps>): any => {
   const theme = useContext(Theme);
+  const styleRef = useRef<HTMLStyleElement | null>(null);
 
   useMemo(() => {
-    const rootElement = document.querySelector("html");
-    if (rootElement) {
-      Object.entries(theme).forEach(([key, value]) => {
-        rootElement.style.setProperty(key, value);
-      });
+    /**
+     * ! Estilos en HMTL style="..."
+     */
+    // const rootElement = document.querySelector("html");
+    // if (rootElement) {
+    //   Object.entries(theme).forEach(([key, value]) => {
+    //     rootElement.style.setProperty(key, value);
+    //   });
+    // }
+
+    /**
+     * ! Estilos en Style tag head
+     */
+    const themeStyles = Object.entries(theme)
+      .map(([key, value]) => `${key}: ${value}`)
+      .join("\n");
+
+    if (!styleRef.current) 
+    {
+      const styleElement = document.createElement("style");
+      styleElement.innerHTML = `:root {\n${themeStyles}}`;
+      styleRef.current = styleElement;
+      document.head.appendChild(styleElement);
+    } 
+    else 
+    {
+      styleRef.current.innerHTML = `:root {\n${themeStyles}}`;
     }
-  }, []);
+
+    return () => {
+      if (styleRef.current) {
+        document.head.removeChild(styleRef.current);
+        styleRef.current = null;
+      }
+    };
+  }, [theme]);
 
   return <Theme.Provider value={theme}>{children}</Theme.Provider>;
 };

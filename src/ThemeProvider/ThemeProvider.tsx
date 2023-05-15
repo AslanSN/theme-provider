@@ -4,6 +4,7 @@ import React, {
   createContext,
   useContext,
   CSSProperties,
+  useMemo,
 } from "react";
 
 export interface ThemeProviderProps {
@@ -18,7 +19,7 @@ const maTheme = {
   height: "100svh",
 };
 
-type MaThemeSchema = CSSProperties & typeof maTheme
+type MaThemeSchema = CSSProperties & typeof maTheme;
 
 const Theme = createContext<MaThemeSchema>(maTheme);
 
@@ -27,10 +28,14 @@ export const ThemeProvider: FC<ThemeProviderProps> = ({
 }: PropsWithChildren<ThemeProviderProps>): any => {
   const theme = useContext(Theme);
 
-  return (
-    <Theme.Provider value={theme}>
-      <div style={theme}>{children}</div>
-    </Theme.Provider>
-  );
-};
+  useMemo(() => {
+    const rootElement = document.querySelector("html");
+    if (rootElement) {
+      Object.entries(theme).forEach(([key, value]) => {
+        rootElement.style.setProperty(key, value);
+      });
+    }
+  }, []);
 
+  return <Theme.Provider value={theme}>{children}</Theme.Provider>;
+};

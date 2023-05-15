@@ -10,6 +10,7 @@ function App() {
         <>
           <Button>BUTTON DE BIT</Button>
           <Card />
+          <button style={{background: "--primary-color"}}>Cualquiera</button>
         </>
       </ThemeProvider>
     </>

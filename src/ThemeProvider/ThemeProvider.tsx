@@ -12,17 +12,17 @@ export interface ThemeProviderProps {
   children: React.ReactNode;
 }
 
-const maTheme = {
+const ThemeTokens = {
   "--primary-color": "#0084c9",
   "--widget-birthdays": "#7a03f1",
-  backgroundColor: "var(--widget-birthdays)",
+  "background-color": "var(--widget-birthdays)",
   width: "100svw",
   height: "100svh",
 };
 
-type MaThemeSchema = CSSProperties & typeof maTheme;
+type ThemeSchema = CSSProperties & typeof ThemeTokens;
 
-const Theme = createContext<MaThemeSchema>(maTheme);
+const Theme = createContext<ThemeSchema>(ThemeTokens);
 
 export const ThemeProvider: FC<ThemeProviderProps> = ({
   children,
@@ -31,33 +31,20 @@ export const ThemeProvider: FC<ThemeProviderProps> = ({
   const styleRef = useRef<HTMLStyleElement | null>(null);
 
   useMemo(() => {
-    /**
-     * ! Estilos en HMTL style="..."
-     */
-    // const rootElement = document.querySelector("html");
-    // if (rootElement) {
-    //   Object.entries(theme).forEach(([key, value]) => {
-    //     rootElement.style.setProperty(key, value);
-    //   });
-    // }
-
-    /**
-     * ! Estilos en Style tag head
-     */
     const themeStyles = Object.entries(theme)
-      .map(([key, value]) => `${key}: ${value}`)
+      .map(([key, value]) => `${key}: ${value};`)
       .join("\n");
 
     if (!styleRef.current) 
     {
       const styleElement = document.createElement("style");
-      styleElement.innerHTML = `:root {\n${themeStyles}}`;
+      styleElement.innerHTML = `:root {\n${themeStyles}\n}`;
       styleRef.current = styleElement;
       document.head.appendChild(styleElement);
     } 
     else 
     {
-      styleRef.current.innerHTML = `:root {\n${themeStyles}}`;
+      styleRef.current.innerHTML = `:root {\n${themeStyles}\n}`;
     }
 
     return () => {

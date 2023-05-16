@@ -18,6 +18,7 @@ const ThemeTokens = {
   "background-color": "var(--widget-birthdays)",
   width: "100svw",
   height: "100svh",
+  color: "#ff077f"
 };
 
 type ThemeSchema = CSSProperties & typeof ThemeTokens;
@@ -26,7 +27,7 @@ const Theme = createContext<ThemeSchema>(ThemeTokens);
 
 export const ThemeProvider: FC<ThemeProviderProps> = ({
   children,
-}: PropsWithChildren<ThemeProviderProps>): any => {
+}: PropsWithChildren<ThemeProviderProps>) => {
   const theme = useContext(Theme);
   const styleRef = useRef<HTMLStyleElement | null>(null);
 
@@ -40,12 +41,8 @@ export const ThemeProvider: FC<ThemeProviderProps> = ({
       const styleElement = document.createElement("style");
       styleElement.innerHTML = `:root {\n${themeStyles}\n}`;
       styleRef.current = styleElement;
-      document.head.appendChild(styleElement);
+      document.head.appendChild(styleRef.current);
     } 
-    else 
-    {
-      styleRef.current.innerHTML = `:root {\n${themeStyles}\n}`;
-    }
 
     return () => {
       if (styleRef.current) {

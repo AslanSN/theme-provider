@@ -8,9 +8,9 @@
 
    ```tsx
    App = () => (
-   	<AppContextProvider>
-   		<Card />
-   	</AppContextProvider>
+     <AppContextProvider>
+       <Card />
+     </AppContextProvider>
    )
    ```
 
@@ -18,9 +18,9 @@
 
    ```tsx
    Card = () => (
-   	<div>
-   		<Button>Soy un Botón</Button>
-   	</div>
+     <div>
+       <Button>Soy un Botón</Button>
+     </div>
    )
    ```
 

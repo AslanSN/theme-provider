@@ -8,20 +8,20 @@
 
    ```tsx
    App = () => (
-     <AppContextProvider>
-       <Card />
-     </AppContextProvider>
-   );
+   	<AppContextProvider>
+   		<Card />
+   	</AppContextProvider>
+   )
    ```
 
    2. Capas intermedias
 
    ```tsx
    Card = () => (
-     <div>
-       <Button>Soy un Botón</Button>
-     </div>
-   );
+   	<div>
+   		<Button>Soy un Botón</Button>
+   	</div>
+   )
    ```
 
    3. Contexto 2 Final Interno
@@ -37,3 +37,4 @@
    ```
 
 4. Principalmente lo queremos para manejo de temas. Ser capaces de editar componentes directamente desde el tema a nivel profundo.
+5. Queremos ver si es posible y cómo.
